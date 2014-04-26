@@ -1,0 +1,24 @@
+nit
+===
+
+The goal of the nit project is to provide a portable, small and
+very-few dependecies any length unsigned integer library
+
+However nit is not a high performance library,
+if you need one of those you should have a look at gmp.
+
+Features / Goals
+----------------
+
+* Be well documented
+  Algorithms and data structers should be described in easy to understand terms.
+
+* Very few dependencies
+  At the moment the unly required dependencies are implementations of
+  malloc, realloc and free.
+  The examples and unit tests allso use the standard input/output functions.
+
+* Portable
+  All the code is written in clean C that should work out of the
+  box on almost any platform.
+  This ofcourse means nit is not very fast compared to other libraries.
