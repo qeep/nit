@@ -30,6 +30,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <limits.h>
 #include "nit.h"
 
@@ -93,10 +94,84 @@ to_and_from_long (unsigned long lv)
   nit_free (&x);
 }
 
-int
-main ()
+void
+to_and_from_hex ()
 {
-  to_and_from_long (0x8877665544332211);
-  to_and_from_long (ULONG_MAX);
+  struct nit x;
+  char buffer[100];
+  char *hexstr = "aabbccdd";
+  enum nit_status s = NIT_OK;
+  unsigned long l = 0;
+
+  nit_clear (&x);
+
+  s = nit_from_long (&x, 0xaabbccdd);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_from_long returned %s\n", status (s));
+    }
+
+  memset (buffer, 0, sizeof (buffer));
+
+  s = nit_out_hex (&x, buffer, sizeof (buffer) - 1);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_out_hex returned %s\n", status (s));
+    }
+
+  if (memcmp (hexstr, buffer, strlen (hexstr)) != 0)
+    {
+      fprintf (stderr, "nit_out_hex did not output correct data.\n"
+	       " should be \"%s\"\n was \"%s\"\n", hexstr, buffer);
+    }
+
+  s = nit_in_hex (&x, buffer, sizeof (buffer) - 1);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_in_hex returned %s\n", status (s));
+    }
+
+  s = nit_to_long (&x, &l);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_to_long returned %s\n", status (s));
+    }
+
+  if (l != 0xaabbccdd)
+    {
+      fprintf (stderr, "long value was not preserved after\n"
+	       " long->nit->hex->nit->long conversion.\n");
+    }
+
+  nit_free (&x);
+}
+
+void
+platform ()
+{
+  printf ("word %lu long %lu\n",
+	  (unsigned long) sizeof (nit_word),
+	  (unsigned long) sizeof (long));
+}
+
+int
+main (int argc, char **argv)
+{
+  int i = 0;
+  if (argc > 1)
+    {
+      for (i = 0; i < argc; i++)
+	{
+	  if (strcmp (argv[i], "-p") == 0)
+	    platform ();
+	}
+    }
+  else
+    {
+      to_and_from_long (0x44332211);
+      to_and_from_long (ULONG_MAX);
+      to_and_from_hex ();
+    }
+
   return 0;
 }
