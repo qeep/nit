@@ -27,6 +27,10 @@
   This file implements functions listed in util.h.
 */
 
+/* Temporary for snprint and sscanf.
+   Will be removed. */
+#include <stdio.h>
+
 #include "nit/util.h"
 
 enum nit_status
@@ -73,4 +77,19 @@ nit_shrink (struct nit *x)
 
   /* Then resize the nit to hold up to and including that word. */
   return nit_resize (x, x->n - i);
+}
+
+/*! Print portable representation of w into buffer. */
+void
+nit_out_hex_word (nit_word w, char *buffer, nit_size size)
+{
+  /* A hack for now. */
+  snprintf (buffer, size, "%x",  w);
+}
+
+void
+nit_in_hex_word (nit_word *w, char *buffer, nit_size size)
+{
+  /* A hack for now. */
+  sscanf (buffer, "%lx", w);
 }
