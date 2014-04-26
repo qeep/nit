@@ -47,4 +47,12 @@ nit_shrink (struct nit *x);
 int
 nit_lazy_cmp (struct nit *x, struct nit *y);
 
+/*! Output portable representation of w into buffer. */
+void
+nit_out_hex_word (nit_word w, char *buffer, nit_size size);
+
+/*! Input portable representation from buffer into w. */
+void
+nit_in_hex_word (nit_word *w, char *buffer, nit_size size);
+
 #endif
