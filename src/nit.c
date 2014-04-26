@@ -92,3 +92,36 @@ nit_to_long (struct nit *x, unsigned long *l)
 
   return NIT_OK;
 }
+
+enum nit_status
+nit_out_hex (struct nit *x, char *buffer, size_t size)
+{
+  nit_size i = 0;
+  /* Length of a word in readable hex. */
+  nit_size k = sizeof (*x->w) * 2;
+
+  if (x == NULL || x->w == NULL)
+    return NIT_NULL_POINTER;
+
+  /* Make sure the nit fits in the buffer. */
+  if (x->n * k > size)
+    return NIT_BUFFER_TO_SMALL;
+
+  /* Print each word. */
+  for (i = x->n - 1; i > 0; i--)
+    {
+      nit_out_hex_word (x->w[i], buffer, size);
+      buffer += k, size -= k;
+    }
+
+  /* Print the least significant word. */
+  nit_out_hex_word (x->w[0], buffer, size);
+
+  return NIT_OK;
+}
+
+enum nit_status
+nit_in_hex (struct nit *x, const char *buffer, size_t size)
+{
+  return NIT_UNINPLEMENTED;
+}
