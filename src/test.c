@@ -79,10 +79,61 @@ to_and_from_long (unsigned long lv)
   nit_free (&x);
 }
 
+void
+long_addition ()
+{
+  struct nit x, y, z;
+  enum nit_status s = NIT_OK;
+  unsigned long l = 0, r = 2;
+
+  nit_clear (&x);
+  nit_clear (&y);
+  nit_clear (&z);
+
+  s = nit_from_long (&y, 1);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_from_long returned %s\n", nit_status_str (s));
+    }
+
+  s = nit_from_long (&z, 1);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_from_long returned %s\n", nit_status_str (s));
+    }
+
+  s = nit_add (&x, &y, &z);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_add returned %s\n", nit_status_str (s));
+    }
+
+  s = nit_to_long (&x, &l);
+  if (s != NIT_OK)
+    {
+      fprintf (stderr, "nit_to_long returned %s\n", nit_status_str (s));
+    }
+
+  if (l != 2)
+    {
+      fprintf (stderr, "nit_add did not produce the correct result.\n");
+      printf (" result was ");
+      bytes (&l, sizeof (l));
+      printf (" but should be ");
+      bytes (&r, sizeof (r));
+      printf ("\n");
+    }
+
+  nit_free (&x);
+  nit_free (&y);
+  nit_free (&z);
+}
+
 int
 main ()
 {
   to_and_from_long (0x8877665544332211);
   to_and_from_long (ULONG_MAX);
+  long_addition();
   return 0;
 }
