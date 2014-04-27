@@ -139,6 +139,8 @@ nit_cmp (struct nit *x, struct nit *y);
 
 /*
   Mathematical operators.
+  x can not be the same nit as y or z.
+  y and z can be the same nit.
 */
 
 /*! z = x + z */
