@@ -31,17 +31,49 @@
 #include "nit.h"
 #include "nit/util.h"
 
-enum nit_status
-nit_free (struct nit *x)
-{
-  return nit_resize (x, 0);
-}
-
 void
 nit_clear (struct nit *x)
 {
   x->w = NULL;
   x->n = 0;
+}
+
+char*
+nit_status_str (enum nit_status s)
+{
+  switch (s)
+    {
+    case NIT_OK:
+      return "NIT_OK";
+    case NIT_UNDERFLOW:
+      return "NIT_UNDERFLOW";
+    case NIT_OVERFLOW:
+      return "NIT_OVERFLOW";
+    case NIT_MEMORY:
+      return "NIT_MEMORY";
+    case NIT_DIVISION_BY_ZERO:
+      return "NIT_DIVISION_BY_ZERO";
+    case NIT_BUFFER_TO_SMALL:
+      return "NIT_BUFFER_TO_SMALL";
+    case NIT_INVALID_FORMAT:
+      return "NIT_INVALID_FORMAT";
+    case NIT_SHARED_MEMORY:
+      return "NIT_SHARED_MEMORY";
+    case NIT_NULL_POINTER:
+      return "NIT_NULL_POINTER";
+    case NIT_ZERO_LENGTH:
+      return "NIT_ZERO_LENGTH";
+    case NIT_UNINPLEMENTED:
+      return "NIT_UNINPLEMENTED";
+    default:
+      return NULL;
+    }
+}
+
+enum nit_status
+nit_free (struct nit *x)
+{
+  return nit_resize (x, 0);
 }
 
 enum nit_status

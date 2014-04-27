@@ -83,6 +83,17 @@ struct nit
   nit_size n;
 };
 
+/*
+  Mixed.
+*/
+
+/*! Clears the nit structure. */
+void
+nit_clear (struct nit *x);
+
+/*! Return string for nit status s. */
+char*
+nit_status_str (enum nit_status s);
 
 /*
   Feeing memory.
@@ -92,10 +103,6 @@ struct nit
   If x->w is NULL the function does nothing. */
 enum nit_status
 nit_free (struct nit *x);
-
-/*! Clears the nit structure. */
-void
-nit_clear (struct nit *x);
 
 /*
   Integer converter
