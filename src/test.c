@@ -33,20 +33,6 @@
 #include <limits.h>
 #include "nit.h"
 
-char*
-status (enum nit_status s)
-{
-  switch (s)
-    {
-    case NIT_OK:
-      return "NIT_OK";
-    case NIT_UNDERFLOW:
-      return "NIT_UNDERFLOW";
-    default:
-      return "unknown";
-    }
-}
-
 /*! Print bytes to stderr. */
 void
 bytes (void *b, size_t n)
@@ -70,13 +56,13 @@ to_and_from_long (unsigned long lv)
   s = nit_from_long (&x, lv);
   if (s != NIT_OK)
     {
-      fprintf (stderr, "%s: nit_from_long returned %s\n", name, status (s));
+      fprintf (stderr, "%s: nit_from_long returned %s\n", name, nit_status_str (s));
     }
 
   s = nit_to_long (&x, &l);
   if (s != NIT_OK)
     {
-      fprintf (stderr, "%s: nit_to_long returned %s\n", name, status (s));
+      fprintf (stderr, "%s: nit_to_long returned %s\n", name, nit_status_str (s));
     }
 
   if (l != lv)
