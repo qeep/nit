@@ -124,3 +124,53 @@ nit_to_long (struct nit *x, unsigned long *l)
 
   return NIT_OK;
 }
+
+enum nit_status
+nit_add (struct nit *x, struct nit *y, struct nit *z)
+{
+  /* Minimum size for x. */
+  nit_size m = 0;
+  /* Index in nits when adding words. */
+  nit_size i = 0;
+  /* Carry from overflow, */
+  nit_word c = 0;
+  /* Status of nit call. */
+  enum nit_status s = NIT_OK;
+
+  /* Check for null pointers. */
+  if (x == NULL || y == NULL || z == NULL
+      || y->w == NULL || z->w == NULL)
+    return NIT_NULL_POINTER;
+
+  /* Check for shared memory. */
+  if (x == y || x == z)
+    return NIT_SHARED_MEMORY;
+
+  /* Calculate minimum length of x. */
+  m = y->n > z->n ? y->n : z->n;
+
+  /* Allocate memory for x. */
+  s = nit_resize (x, m);
+  if (s != NIT_OK)
+    return s;
+
+  /* Add each word and carry. */
+  for (i = 0; i < x->n; i++)
+    {
+      x->w[i] = nit_index (y, i) + nit_index (z, i) + c;
+      c = x->w[i] < nit_index(z, i);
+    }
+
+  /* If the addition overflowed then add
+     another word to the end of x, place carry there. */
+  if (c)
+    {
+      m++;
+      s = nit_resize (x, m);
+      if (s != NIT_OK)
+	return s;
+      x->w[x->n - 1] = c;
+    }
+
+  return NIT_OK;
+}
