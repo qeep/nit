@@ -55,4 +55,10 @@ nit_out_hex_word (nit_word w, char *buffer, nit_size size);
 void
 nit_in_hex_word (nit_word *w, char *buffer, nit_size size);
 
+/*! Get word at position i or
+  zero if i is outside of the length of x.
+  x and x->w must not be NULL.*/
+nit_word
+nit_index (struct nit *x, nit_size i);
+
 #endif

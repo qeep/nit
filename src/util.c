@@ -74,3 +74,9 @@ nit_shrink (struct nit *x)
   /* Then resize the nit to hold up to and including that word. */
   return nit_resize (x, x->n - i);
 }
+
+nit_word
+nit_index (struct nit *x, nit_size i)
+{
+  return i < x->n ? x->w[i] : 0;
+}
